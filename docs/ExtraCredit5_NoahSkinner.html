@@ -1,0 +1,71 @@
+<! DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" 
+      content="initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Adding other API Modules</title>
+<style>
+  html, body, #viewDiv {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+  }
+</style>
+
+<link rel="stylesheet" href="https://js.arcgis.com/4.17/esri/css/main.css">
+<script src="https://js.arcgis.com/4.17/"></script>
+    
+    <script>
+        require([
+            "esri/Map",
+            "esri/views/MapView",
+            "esri/layers/ImageryLayer",
+            "esri/layers/MapImageLayer"
+        ], function(Map, MapView, ImageryLayer, MapImageLayer)
+               {
+            var myMap = new Map({
+                basemap: "gray",
+            });
+            
+            var myView = new MapView({
+                container: "viewDiv",
+                map: myMap,
+                zoom: 4,
+                center: [-98.59, 39.83]
+            });
+            
+            var myImage = new ImageryLayer({
+                url: "https://services.nationalmap.gov/arcgis/rest/services/USGSNAIPImagery/imageServer",
+                format: "jpgpng"
+            });
+            
+            myMap.add(myImage);
+            
+            var myLayers = new MapImageLayer({
+                url: "https://earthquake.usgs.gov/arcgis/rest/services/eq/scenarios/MapServer",
+                sublayers: [{
+                    id: 2,
+                    title: "Mercally Intensity"
+                },{
+                    id:1,
+                    title: "Ruptures"
+                },{
+                    id:0,
+                    title: "Epicenters"
+                }]
+            });
+            
+            myMap.add(myLayers);
+        });
+    </script>
+</head>
+<body>
+ 
+
+<div id="viewDiv"> </div>
+
+
+</body>
+</html>
